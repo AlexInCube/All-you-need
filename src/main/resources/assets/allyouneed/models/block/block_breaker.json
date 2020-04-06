@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "allyouneed:block/block_breaker/block_breaker_other_side",
+    "down": "allyouneed:block/block_breaker/block_breaker_other_side",
+    "up": "allyouneed:block/block_breaker/block_breaker_other_side",
+    "east": "allyouneed:block/block_breaker/block_breaker_east",
+    "west": "allyouneed:block/block_breaker/block_breaker_west",
+    "north": "allyouneed:block/block_breaker/block_breaker_north",
+    "south": "allyouneed:block/block_breaker/block_breaker_other_side"
+  }
+}
