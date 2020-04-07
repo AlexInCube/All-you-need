@@ -55,7 +55,7 @@ public class blockbreakergui extends ContainerScreen<blockbreakercontainer> {
         this.font.drawString(s, centerX, 6.0F, 0x404040);
         this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 93), 0x404040);
         getMinecraft().getTextureManager().bindTexture(BACKGROUND_TEXTURE);
-        if (this.container.getRedstoneControl()== 1) {
+        if (this.container.getRedstoneControl() == 1) {
             this.blit(133, 35, 176, 0, 18, 18);//x,y,texturex,texturey,width,height
         }else{
             this.blit(133, 35, 194, 0, 18, 18);//x,y,texturex,texturey,width,height
@@ -65,15 +65,14 @@ public class blockbreakergui extends ContainerScreen<blockbreakercontainer> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-
         if (mouseX >= this.guiLeft+133 && mouseY >= this.guiTop+35 && mouseX < this.guiLeft+152 && mouseY < this.guiTop+51) {
             if (this.container.getRedstoneControl() == 0) {
-                Networking.INSTANCE.sendToServer(new PacketChangeRedstoneControl(this.container.tileEntity.getPos(), 1));
+                Networking.INSTANCE.sendToServer(new PacketChangeRedstoneControl(this.container.windowId, 1));
             }else{
-                Networking.INSTANCE.sendToServer(new PacketChangeRedstoneControl(this.container.tileEntity.getPos(), 0));
+                Networking.INSTANCE.sendToServer(new PacketChangeRedstoneControl(this.container.windowId, 0));
             }
+            System.out.println(this.container.getRedstoneControl());
         }
-
         return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 }

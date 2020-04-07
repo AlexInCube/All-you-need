@@ -10,10 +10,12 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -62,44 +64,62 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
     private final LazyOptional<ItemStackHandler> inventoryCapabilityExternal = LazyOptional.of(() -> this.inventory);
     private int redstoneControl;
 
-    public int get(int index) {
-        switch(index) {
-            case 0: return blockbreakertile.this.redstoneControl;
-            default: return 0;
+    protected final IIntArray furnaceData = new IIntArray() {
+        public int get(int index) {
+            switch (index) {
+                case 0:
+                    return redstoneControl;
+                default:
+                    return 0;
+            }
         }
-    }
 
-    public void set(int index, int value) {
-        switch(index) {
-            case 0: this.markDirty(); blockbreakertile.this.redstoneControl = value;
+        public void set(int index, int value) {
+            switch (index) {
+                case 0:
+                    redstoneControl = value;
+                    break;
+
+            }
+
         }
-    }
 
+        public int size() {
+            return 4;
+        }
+    };
 
 
     @Override
     public void tick() {
         if (!this.world.isRemote) {
             boolean redstonesignal = world.getBlockState(pos).get(REDSTONE_SIGNAL);
-            if (redstonesignal && redstoneControl == 1 | redstoneControl == 0)  {
-                ItemStack itemstack = this.inventory.getStackInSlot(0);//Get ITEMSTACK from slot
+            if ((redstonesignal & redstoneControl == 1) || redstoneControl == 0)  {
                 Direction direction = world.getBlockState(pos).get(FACING);
                 BlockPos blockp = pos.offset(direction, 1);//Get XYZ block which need to break
                 Block block = world.getBlockState(blockp).getBlock();//Get block which need to break
-
-                ItemStack itemstack2 = new ItemStack(Item.getItemFromBlock(block));//Get ITEMSTACK from BLOCK which we break
-                if (world.isAirBlock(blockp) == false && itemstack.getCount() <= 63) {//If block is not air and item stack dont equal 64
-                    if (itemstack.isEmpty()) {//If slot don't have any item, then set itemstack from block
-                        this.inventory.setStackInSlot(0, itemstack2.copy());//Set itemstack
-                    } else if (itemstack.getItem() == itemstack2.getItem()) {//If slot have any item and block which we break equivalent block which contained in slot, then increase itemstack
-                        itemstack.setCount(itemstack.getCount() + 1);
+                if (world.isAirBlock(blockp) == false) {
+                    if (block.hasTileEntity(getBlockState()) == false) {
+                            ItemStack itemstackfromblock = new ItemStack(Item.getItemFromBlock(block));//Get ITEMSTACK from BLOCK which we break
+                            for (int i = 0; i < 9; i++) {
+                                ItemStack itemstack = this.inventory.getStackInSlot(i);
+                                if (itemstack.getItem().equals(itemstackfromblock.getItem()) & itemstack.getCount() < itemstack.getMaxStackSize()) {
+                                    world.destroyBlock(blockp, false);//just break the block
+                                    itemstack.grow(itemstack.getCount());
+                                    break;
+                                } else if (itemstack.isEmpty()) {
+                                    world.destroyBlock(blockp, false);//just break the block
+                                    this.inventory.insertItem(i,itemstackfromblock,false);
+                                    break;
+                                }
+                            }
+                        }
                     }
-                    world.destroyBlock(blockp, false);//just break the block
                 }
+                this.markDirty();
             }
-            this.markDirty();
-        }
     }
+
 
     @Override
     public void read(CompoundNBT tag) {
@@ -116,7 +136,6 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
             tag.put("inv", compound);
         });
         tag.putInt("redstonecontrol", redstoneControl);
-        System.out.println(tag.getInt("redstonecontrol"));
         return super.write(tag);
     }
 
@@ -136,7 +155,7 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
 
     @Nonnull
     public Container createMenu(final int windowId, final PlayerInventory inventory, final PlayerEntity player) {
-        return new blockbreakercontainer(windowId, inventory, this);
+        return new blockbreakercontainer(windowId, inventory, this,furnaceData);
     }
 
     @Nonnull

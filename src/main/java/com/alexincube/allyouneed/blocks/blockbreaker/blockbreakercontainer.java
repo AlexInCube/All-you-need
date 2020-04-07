@@ -5,14 +5,15 @@ import com.alexincube.allyouneed.setup.ModContainerTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.IContainerListener;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.IntReferenceHolder;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraft.util.IntArray;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
@@ -23,16 +24,16 @@ public class blockbreakercontainer extends Container {
 
     public final blockbreakertile tileEntity;
     private final IWorldPosCallable canInteractWithCallable;
-    private int redstoneControl;
+    private final IIntArray furnaceData;
 
     public blockbreakercontainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer data) {
-        this(windowId, playerInventory, getTileEntity(playerInventory, data));
+        this(windowId, playerInventory, getTileEntity(playerInventory, data), new IntArray(1));
     }
 
-    public blockbreakercontainer(int windowId, PlayerInventory playerInventory, blockbreakertile tileEntity) {
+    public blockbreakercontainer(int windowId, PlayerInventory playerInventory, blockbreakertile tileEntity, IIntArray iIntArray) {
         super(ModContainerTypes.BLOCK_BREAKER_CONTAINER.get(), windowId);
         this.tileEntity = tileEntity;
-        redstoneControl = getRedstoneControl();
+        this.furnaceData = iIntArray;
         this.canInteractWithCallable = IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos());
 
         final int playerInventoryStartX = 8;
@@ -62,27 +63,7 @@ public class blockbreakercontainer extends Container {
             this.addSlot(new Slot(playerInventory, column, playerInventoryStartX + (column * slotSizePlus2), playerHotbarY));
         }
 
-        trackInt(new IntReferenceHolder() {
-            @Override
-            public int get() {
-                return getRedstoneControl();
-            }
-
-            @Override
-            public void set(int value) {
-                tileEntity.set(0,redstoneControl);
-            }
-        });
-    }
-
-    @Override
-    public void addListener(IContainerListener listener) {
-        super.addListener(listener);
-        listener.sendWindowProperty(this,redstoneControl,tileEntity.get(0));
-    }
-
-    public int getRedstoneControl() {
-        return tileEntity.get(0);
+        this.trackIntArray(iIntArray);
     }
 
 
@@ -128,6 +109,15 @@ public class blockbreakercontainer extends Container {
     @Override
     public boolean canInteractWith(@Nonnull final PlayerEntity player) {
         return isWithinUsableDistance(canInteractWithCallable, player, ModBlocks.block_breaker.get());
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getRedstoneControl() {
+        return this.furnaceData.get(0);
+    }
+
+    public void setRedstoneControl(int value) {
+        this.furnaceData.set(0,value);
     }
 
 }
