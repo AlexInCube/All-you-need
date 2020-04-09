@@ -2,6 +2,7 @@ package com.alexincube.allyouneed.setup;
 
 import com.alexincube.allyouneed.allyouneed;
 import com.alexincube.allyouneed.blocks.blockbreaker.blockbreakergui;
+import com.alexincube.allyouneed.blocks.trashcan.trashcangui;
 import com.alexincube.allyouneed.blocks.woodcrate.woodcrategui;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,6 +34,7 @@ public final class ClientModEventSubscriber {
         DeferredWorkQueue.runLater(() -> {
             ScreenManager.registerFactory(ModContainerTypes.WOOD_CRATE_CONTAINER.get(), woodcrategui::new);
             ScreenManager.registerFactory(ModContainerTypes.BLOCK_BREAKER_CONTAINER.get(), blockbreakergui::new);
+            ScreenManager.registerFactory(ModContainerTypes.TRASH_CAN_CONTAINER.get(), trashcangui::new);
             LOGGER.debug("Registered ContainerType Screens");
         });
 

@@ -1,6 +1,7 @@
 package com.alexincube.allyouneed.setup;
 
 import com.alexincube.allyouneed.allyouneed;
+import com.alexincube.allyouneed.items.angelblockplacer;
 import com.alexincube.allyouneed.items.portable_nether_portal;
 import com.alexincube.allyouneed.items.super_tool;
 import net.minecraft.item.Item;
@@ -17,7 +18,7 @@ public final class ModItems {
     // This is a very simple Item. It has no special properties except for being on our creative tab.
     public static final RegistryObject<Item> SUPER_TOOL = ITEMS.register("super_tool", () -> new super_tool(ItemTier.DIAMOND,5,-2,new Item.Properties().group(ModItemGroups.MOD_ITEM_GROUP)));
     public static final RegistryObject<Item> PORTABLE_NETHER_PORTAL = ITEMS.register("portable_nether_portal", () -> new portable_nether_portal());
-
+    public static final RegistryObject<Item> ANGEL_BLOCK_PLACER = ITEMS.register("angel_block_placer", () -> new angelblockplacer());
 
 
 }

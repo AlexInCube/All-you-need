@@ -1,7 +1,11 @@
 ﻿{
 	"item.allyouneed.super_tool": "Super Tool",
 	"item.allyouneed.portable_nether_portal": "Portable Nether Portal",
+	"item.allyouneed.angel_block_placer": "Angel Block",
 	"block.allyouneed.wood_crate": "Wood Crate",
 	"block.allyouneed.block_breaker": "Block Breaker",
-	"itemGroup.allyouneed":"All You Need"
+	"block.allyouneed.angel_block": "Angel Block",
+	"block.allyouneed.trash_can": "Trash Can",
+	"itemGroup.allyouneed":"All You Need",
+	"description.allyouneed.angel_block_placer": "§8§oIf you right click in air, you create angel block below you if below dont exists any block"
 }

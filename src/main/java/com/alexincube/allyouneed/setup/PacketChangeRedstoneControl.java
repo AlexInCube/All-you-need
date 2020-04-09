@@ -36,7 +36,6 @@ public class PacketChangeRedstoneControl {
             Container playercont=ctx.get().getSender().openContainer;
             if (windowId == playercont.windowId){
                 ((blockbreakercontainer)playercont).setRedstoneControl(rc);
-                System.out.println(((blockbreakercontainer)playercont).getRedstoneControl());
             }
 
             });

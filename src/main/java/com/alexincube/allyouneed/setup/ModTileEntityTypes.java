@@ -2,6 +2,7 @@ package com.alexincube.allyouneed.setup;
 
 import com.alexincube.allyouneed.allyouneed;
 import com.alexincube.allyouneed.blocks.blockbreaker.blockbreakertile;
+import com.alexincube.allyouneed.blocks.trashcan.trashcantile;
 import com.alexincube.allyouneed.blocks.woodcrate.woodcratetile;
 import com.alexincube.allyouneed.setup.ModBlocks;
 import net.minecraft.tileentity.TileEntityType;
@@ -19,6 +20,9 @@ public final class ModTileEntityTypes {
     );
     public static final RegistryObject<TileEntityType<blockbreakertile>> block_breaker_tile = TILE_ENTITY_TYPES.register("block_breaker_tile", () ->
             TileEntityType.Builder.create(blockbreakertile::new, ModBlocks.block_breaker.get()).build(null)
+    );
+    public static final RegistryObject<TileEntityType<trashcantile>> trash_can_tile = TILE_ENTITY_TYPES.register("trash_can_tile", () ->
+            TileEntityType.Builder.create(trashcantile::new, ModBlocks.trash_can.get()).build(null)
     );
 
 }

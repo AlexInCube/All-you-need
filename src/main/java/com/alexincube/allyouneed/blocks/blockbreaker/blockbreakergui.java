@@ -12,7 +12,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 
 public class blockbreakergui extends ContainerScreen<blockbreakercontainer> {
-    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(allyouneed.MODID, "textures/gui/container/block_breaker/block_breaker_gui.png");
+    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(allyouneed.MODID, "textures/gui/container/block_breaker_gui.png");
 
     public blockbreakergui(final blockbreakercontainer container, final PlayerInventory inventory, final ITextComponent title) {
         super(container, inventory, title);
@@ -71,7 +71,6 @@ public class blockbreakergui extends ContainerScreen<blockbreakercontainer> {
             }else{
                 Networking.INSTANCE.sendToServer(new PacketChangeRedstoneControl(this.container.windowId, 0));
             }
-            System.out.println(this.container.getRedstoneControl());
         }
         return super.mouseClicked(mouseX, mouseY, mouseButton);
     }

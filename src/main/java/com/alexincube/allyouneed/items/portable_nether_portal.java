@@ -15,9 +15,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
 public class portable_nether_portal extends Item{
-
-
-
     public portable_nether_portal(){
         super(new Properties()
                 .maxStackSize(1)
@@ -38,10 +35,6 @@ public class portable_nether_portal extends Item{
 
         return ActionResult.resultPass(itemstack);
     }
-
-
-
-
     @Override
     public int getUseDuration(ItemStack stack) {
         return 80;
