@@ -1,14 +1,12 @@
-package com.alexincube.allyouneed.blocks.blockbreaker;
+package com.alexincube.allyouneed.blocks.block_breaker;
 
 import com.alexincube.allyouneed.allyouneed;
 import com.alexincube.allyouneed.setup.Networking;
-import com.alexincube.allyouneed.setup.PacketChangeRedstoneControl;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 
 public class blockbreakergui extends ContainerScreen<blockbreakercontainer> {
@@ -67,9 +65,9 @@ public class blockbreakergui extends ContainerScreen<blockbreakercontainer> {
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (mouseX >= this.guiLeft+133 && mouseY >= this.guiTop+35 && mouseX < this.guiLeft+152 && mouseY < this.guiTop+51) {
             if (this.container.getRedstoneControl() == 0) {
-                Networking.INSTANCE.sendToServer(new PacketChangeRedstoneControl(this.container.windowId, 1));
+                Networking.INSTANCE.sendToServer(new PacketChangeRedstoneBlockBreaker(this.container.windowId, 1));
             }else{
-                Networking.INSTANCE.sendToServer(new PacketChangeRedstoneControl(this.container.windowId, 0));
+                Networking.INSTANCE.sendToServer(new PacketChangeRedstoneBlockBreaker(this.container.windowId, 0));
             }
         }
         return super.mouseClicked(mouseX, mouseY, mouseButton);

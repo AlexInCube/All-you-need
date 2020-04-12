@@ -1,7 +1,6 @@
-package com.alexincube.allyouneed.blocks.trashcan;
+package com.alexincube.allyouneed.blocks.trash_can;
 
 import com.alexincube.allyouneed.allyouneed;
-import com.alexincube.allyouneed.blocks.woodcrate.woodcratecontainer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;

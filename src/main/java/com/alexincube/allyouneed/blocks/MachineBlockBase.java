@@ -31,8 +31,7 @@ public abstract class MachineBlockBase extends DirectionalBlock {
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-        builder.add(REDSTONE_SIGNAL);
+        builder.add(FACING,REDSTONE_SIGNAL);
     }
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {

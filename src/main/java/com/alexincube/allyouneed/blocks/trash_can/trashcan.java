@@ -1,4 +1,4 @@
-package com.alexincube.allyouneed.blocks.woodcrate;
+package com.alexincube.allyouneed.blocks.trash_can;
 
 import com.alexincube.allyouneed.setup.ModTileEntityTypes;
 import net.minecraft.block.Block;
@@ -7,27 +7,29 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.items.ItemStackHandler;
+public class trashcan extends Block {
 
-public class woodcrate extends Block {
-    public woodcrate(){
-        super(Properties.create(Material.WOOD)
-                        .hardnessAndResistance(2.0f)
-                        .harvestLevel(1)
-                        .harvestTool(ToolType.AXE)
-                        .sound(SoundType.WOOD)
+    protected static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 14.0D, 14.0D);
 
+    public trashcan(){
+        super(Properties.create(Material.GLASS)
+                        .hardnessAndResistance(3.5f)
+                        .harvestLevel(2)
+                        .harvestTool(ToolType.PICKAXE)
+                        .sound(SoundType.METAL)
+                        .notSolid()
         );
     }
     @Override
@@ -35,29 +37,20 @@ public class woodcrate extends Block {
         return true;
     }
 
-    @Override
-    public TileEntity createTileEntity(final BlockState state, final IBlockReader world) {
-        return ModTileEntityTypes.wood_crate_tile.get().create();
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return SHAPE;
     }
 
     @Override
-    public void onReplaced(BlockState oldState, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (oldState.getBlock() != newState.getBlock()) {
-            TileEntity tileEntity = worldIn.getTileEntity(pos);
-            if (tileEntity instanceof woodcratetile) {
-                final ItemStackHandler inventory = ((woodcratetile) tileEntity).inventory;
-                for (int slot = 0; slot < inventory.getSlots(); ++slot)
-                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(slot));
-            }
-        }
-        super.onReplaced(oldState, worldIn, pos, newState, isMoving);
+    public TileEntity createTileEntity(final BlockState state, final IBlockReader world) {
+        return ModTileEntityTypes.trash_can_tile.get().create();
     }
 
     @Override
     public ActionResultType onBlockActivated(final BlockState state, final World worldIn, final BlockPos pos, final PlayerEntity player, final Hand handIn, final BlockRayTraceResult hit) {
         if (!worldIn.isRemote) {
             final TileEntity tileEntity = worldIn.getTileEntity(pos);
-            if (tileEntity instanceof woodcratetile)
+            if (tileEntity instanceof trashcantile)
                 NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, pos);
         }
         return ActionResultType.SUCCESS;

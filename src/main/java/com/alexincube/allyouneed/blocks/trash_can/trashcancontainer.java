@@ -1,4 +1,5 @@
-package com.alexincube.allyouneed.blocks.blockbreaker;
+package com.alexincube.allyouneed.blocks.trash_can;
+
 
 import com.alexincube.allyouneed.setup.ModBlocks;
 import com.alexincube.allyouneed.setup.ModContainerTypes;
@@ -9,46 +10,32 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIntArray;
 import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.IntArray;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
 
-public class blockbreakercontainer extends Container {
+public class trashcancontainer extends Container {
 
-    public final blockbreakertile tileEntity;
+    public final trashcantile tileEntity;
     private final IWorldPosCallable canInteractWithCallable;
-    private final IIntArray furnaceData;
 
-    public blockbreakercontainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer data) {
-        this(windowId, playerInventory, getTileEntity(playerInventory, data), new IntArray(1));
+    public trashcancontainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer data) {
+        this(windowId, playerInventory, getTileEntity(playerInventory, data));
     }
 
-    public blockbreakercontainer(int windowId, PlayerInventory playerInventory, blockbreakertile tileEntity, IIntArray iIntArray) {
-        super(ModContainerTypes.BLOCK_BREAKER_CONTAINER.get(), windowId);
+    public trashcancontainer(int windowId, PlayerInventory playerInventory, trashcantile tileEntity) {
+        super(ModContainerTypes.TRASH_CAN_CONTAINER.get(), windowId);
         this.tileEntity = tileEntity;
-        this.furnaceData = iIntArray;
         this.canInteractWithCallable = IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos());
 
         final int playerInventoryStartX = 8;
         final int playerInventoryStartY = 84;
         final int slotSizePlus2 = 18; // slots are 16x16, plus 2 (for spacing/borders) is 18x18
 
-        for(int i = 0; i < 3; ++i)
-        {
-            for(int j = 0; j < 3; ++j)
-            {
-                this.addSlot(new SlotItemHandler(tileEntity.inventory, j + i*3, 62 + j*18, 18 + i*18));
-            }
-        }
-        this.addSlot(new SlotItemHandler(tileEntity.inventory, 10, 26, 36));
-
+       this.addSlot(new SlotItemHandler(tileEntity.inventory, 0, 80, 38));
 
         // Player Top Inventory slots
         for (int row = 0; row < 3; ++row) {
@@ -62,18 +49,6 @@ public class blockbreakercontainer extends Container {
         for (int column = 0; column < 9; ++column) {
             this.addSlot(new Slot(playerInventory, column, playerInventoryStartX + (column * slotSizePlus2), playerHotbarY));
         }
-
-        this.trackIntArray(iIntArray);
-    }
-
-
-    private static blockbreakertile getTileEntity(final PlayerInventory playerInventory, final PacketBuffer data) {
-        Objects.requireNonNull(playerInventory, "playerInventory cannot be null!");
-        Objects.requireNonNull(data, "data cannot be null!");
-        final TileEntity tileAtPos = playerInventory.player.world.getTileEntity(data.readBlockPos());
-        if (tileAtPos instanceof blockbreakertile)
-            return (blockbreakertile) tileAtPos;
-        throw new IllegalStateException("Tile entity is not correct! " + tileAtPos);
     }
 
     @Nonnull
@@ -106,18 +81,17 @@ public class blockbreakercontainer extends Container {
         return returnStack;
     }
 
+    private static trashcantile getTileEntity(final PlayerInventory playerInventory, final PacketBuffer data) {
+        Objects.requireNonNull(playerInventory, "playerInventory cannot be null!");
+        Objects.requireNonNull(data, "data cannot be null!");
+        final TileEntity tileAtPos = playerInventory.player.world.getTileEntity(data.readBlockPos());
+        if (tileAtPos instanceof trashcantile)
+            return (trashcantile) tileAtPos;
+        throw new IllegalStateException("Tile entity is not correct! " + tileAtPos);
+    }
+
     @Override
     public boolean canInteractWith(@Nonnull final PlayerEntity player) {
-        return isWithinUsableDistance(canInteractWithCallable, player, ModBlocks.block_breaker.get());
+        return isWithinUsableDistance(canInteractWithCallable, player, ModBlocks.trash_can.get());
     }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getRedstoneControl() {
-        return this.furnaceData.get(0);
-    }
-
-    public void setRedstoneControl(int value) {
-        this.furnaceData.set(0,value);
-    }
-
 }

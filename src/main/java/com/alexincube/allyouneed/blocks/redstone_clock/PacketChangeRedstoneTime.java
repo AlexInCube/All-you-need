@@ -1,22 +1,16 @@
-package com.alexincube.allyouneed.setup;
+package com.alexincube.allyouneed.blocks.redstone_clock;
 
-import com.alexincube.allyouneed.blocks.blockbreaker.blockbreakercontainer;
-import com.alexincube.allyouneed.blocks.blockbreaker.blockbreakertile;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketChangeRedstoneControl {
+public class PacketChangeRedstoneTime {
     private final int windowId;
-    private final int rc;
+    private int rc;
 
-    public PacketChangeRedstoneControl(PacketBuffer buf){
+    public PacketChangeRedstoneTime(PacketBuffer buf){
         windowId = buf.readInt();
         rc = buf.readInt();
     }
@@ -26,7 +20,7 @@ public class PacketChangeRedstoneControl {
         buf.writeInt(rc);
     }
 
-    public PacketChangeRedstoneControl(int windowId, int rc){
+    public PacketChangeRedstoneTime(int windowId, int rc){
         this.windowId = windowId;
         this.rc = rc;
     }
@@ -35,7 +29,8 @@ public class PacketChangeRedstoneControl {
         ctx.get().enqueueWork(() -> {
             Container playercont=ctx.get().getSender().openContainer;
             if (windowId == playercont.windowId){
-                ((blockbreakercontainer)playercont).setRedstoneControl(rc);
+                if (rc<10){rc=10;}
+                ((redstoneclockcontainer)playercont).setRedstoneTotalTime(rc);
             }
 
             });

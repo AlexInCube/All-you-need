@@ -1,4 +1,4 @@
-package com.alexincube.allyouneed.blocks.trashcan;
+package com.alexincube.allyouneed.blocks.trash_can;
 
 import com.alexincube.allyouneed.setup.ModBlocks;
 import com.alexincube.allyouneed.setup.ModTileEntityTypes;

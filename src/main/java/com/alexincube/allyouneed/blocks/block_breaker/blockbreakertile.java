@@ -1,4 +1,4 @@
-package com.alexincube.allyouneed.blocks.blockbreaker;
+package com.alexincube.allyouneed.blocks.block_breaker;
 
 import com.alexincube.allyouneed.setup.ModBlocks;
 import com.alexincube.allyouneed.setup.ModTileEntityTypes;
@@ -10,7 +10,6 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -30,7 +29,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static com.alexincube.allyouneed.blocks.blockbreaker.blockbreaker.REDSTONE_SIGNAL;
+import static com.alexincube.allyouneed.blocks.block_breaker.blockbreaker.REDSTONE_SIGNAL;
 import static net.minecraft.state.properties.BlockStateProperties.FACING;
 
 
@@ -85,7 +84,7 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
         }
 
         public int size() {
-            return 4;
+            return 1;
         }
     };
 

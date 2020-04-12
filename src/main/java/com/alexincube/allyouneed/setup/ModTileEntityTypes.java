@@ -1,10 +1,10 @@
 package com.alexincube.allyouneed.setup;
 
 import com.alexincube.allyouneed.allyouneed;
-import com.alexincube.allyouneed.blocks.blockbreaker.blockbreakertile;
-import com.alexincube.allyouneed.blocks.trashcan.trashcantile;
-import com.alexincube.allyouneed.blocks.woodcrate.woodcratetile;
-import com.alexincube.allyouneed.setup.ModBlocks;
+import com.alexincube.allyouneed.blocks.block_breaker.blockbreakertile;
+import com.alexincube.allyouneed.blocks.redstone_clock.redstoneclocktile;
+import com.alexincube.allyouneed.blocks.trash_can.trashcantile;
+import com.alexincube.allyouneed.blocks.wood_crate.woodcratetile;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -23,6 +23,9 @@ public final class ModTileEntityTypes {
     );
     public static final RegistryObject<TileEntityType<trashcantile>> trash_can_tile = TILE_ENTITY_TYPES.register("trash_can_tile", () ->
             TileEntityType.Builder.create(trashcantile::new, ModBlocks.trash_can.get()).build(null)
+    );
+    public static final RegistryObject<TileEntityType<redstoneclocktile>> redstone_clock_tile = TILE_ENTITY_TYPES.register("redstone_clock_tile", () ->
+            TileEntityType.Builder.create(redstoneclocktile::new, ModBlocks.redstone_clock.get()).build(null)
     );
 
 }

@@ -1,4 +1,4 @@
-package com.alexincube.allyouneed.blocks.woodcrate;
+package com.alexincube.allyouneed.blocks.wood_crate;
 
 import com.alexincube.allyouneed.allyouneed;
 import com.mojang.blaze3d.systems.RenderSystem;
