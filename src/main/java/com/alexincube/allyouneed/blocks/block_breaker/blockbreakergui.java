@@ -59,7 +59,7 @@ public class blockbreakergui extends ContainerScreen<blockbreakercontainer> {
         }else{
             this.blit(133, 35, 194, 0, 18, 18);//x,y,texturex,texturey,width,height
         }
-
+        this.font.drawString(this.container.getCurrentTimeToBreak()+"/"+this.container.getTotalTimeToBreak(), 8.0F, 10, 0x404040);
     }
 
     @Override

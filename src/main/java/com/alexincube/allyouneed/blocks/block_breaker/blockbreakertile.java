@@ -61,13 +61,19 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
 
     // Store the capability lazy optionals as fields to keep the amount of objects we use to a minimum
     private final LazyOptional<ItemStackHandler> inventoryCapabilityExternal = LazyOptional.of(() -> this.inventory);
-    private int redstoneControl;
+    private int redstoneControl=1;
+    private int totaltimetobreak=100;
+    private int currenttimetobreak=totaltimetobreak;
 
-    protected final IIntArray furnaceData = new IIntArray() {
+    protected final IIntArray breakerdata = new IIntArray() {
         public int get(int index) {
             switch (index) {
                 case 0:
                     return redstoneControl;
+                case 1:
+                    return currenttimetobreak;
+                case 2:
+                    return totaltimetobreak;
                 default:
                     return 0;
             }
@@ -78,13 +84,18 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
                 case 0:
                     redstoneControl = value;
                     break;
-
+                case 1:
+                    currenttimetobreak = value;
+                    break;
+                case 2:
+                    totaltimetobreak = value;
+                    break;
             }
 
         }
 
         public int size() {
-            return 1;
+            return 3;
         }
     };
 
@@ -93,12 +104,14 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
     public void tick() {
         if (!this.world.isRemote) {
             boolean redstonesignal = world.getBlockState(pos).get(REDSTONE_SIGNAL);
-            if ((redstonesignal & redstoneControl == 1) || redstoneControl == 0)  {
-                Direction direction = world.getBlockState(pos).get(FACING);
-                BlockPos blockp = pos.offset(direction, 1);//Get XYZ block which need to break
-                Block block = world.getBlockState(blockp).getBlock();//Get block which need to break
-                if (world.isAirBlock(blockp) == false) {
-                    if (block.hasTileEntity(getBlockState()) == false) {
+            if ((redstonesignal & redstoneControl == 1) || redstoneControl == 0) {
+                currenttimetobreak -= 1;
+                if (currenttimetobreak <= 0) {
+                    Direction direction = world.getBlockState(pos).get(FACING);
+                    BlockPos blockp = pos.offset(direction, 1);//Get XYZ block which need to break
+                    Block block = world.getBlockState(blockp).getBlock();//Get block which need to break
+                    if (world.isAirBlock(blockp) == false) {
+                        if (block.hasTileEntity(getBlockState()) == false) {
                             ItemStack itemstackfromblock = new ItemStack(Item.getItemFromBlock(block));//Get ITEMSTACK from BLOCK which we break
                             for (int i = 0; i < 9; i++) {
                                 ItemStack itemstack = this.inventory.getStackInSlot(i);
@@ -108,14 +121,16 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
                                     break;
                                 } else if (itemstack.isEmpty()) {
                                     world.destroyBlock(blockp, false);//just break the block
-                                    this.inventory.insertItem(i,itemstackfromblock,false);
+                                    this.inventory.insertItem(i, itemstackfromblock, false);
                                     break;
                                 }
                             }
                         }
                     }
+                    currenttimetobreak=totaltimetobreak;
                 }
-                this.markDirty();
+            }
+            this.markDirty();
             }
     }
 
@@ -125,6 +140,8 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
         CompoundNBT invTag = tag.getCompound("inv");
         inventoryCapabilityExternal.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(invTag));
         redstoneControl = tag.getInt("redstonecontrol");
+        totaltimetobreak = tag.getInt("totaltimetobreak");
+        currenttimetobreak  = tag.getInt("currenttimetobreak");
         super.read(tag);
     }
 
@@ -135,6 +152,8 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
             tag.put("inv", compound);
         });
         tag.putInt("redstonecontrol", redstoneControl);
+        tag.putInt("totaltimetobreak", totaltimetobreak);
+        tag.putInt("currenttimetobreak", currenttimetobreak);
         return super.write(tag);
     }
 
@@ -154,7 +173,7 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
 
     @Nonnull
     public Container createMenu(final int windowId, final PlayerInventory inventory, final PlayerEntity player) {
-        return new blockbreakercontainer(windowId, inventory, this,furnaceData);
+        return new blockbreakercontainer(windowId, inventory, this,this.breakerdata);
     }
 
     @Nonnull

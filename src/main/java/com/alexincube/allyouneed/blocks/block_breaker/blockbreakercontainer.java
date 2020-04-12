@@ -25,17 +25,17 @@ public class blockbreakercontainer extends Container implements IRedstoneControl
 
     public final blockbreakertile tileEntity;
     private final IWorldPosCallable canInteractWithCallable;
-    private final IIntArray furnaceData;
+    private final IIntArray breakerData;
 
     public blockbreakercontainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer data) {
-        this(windowId, playerInventory, getTileEntity(playerInventory, data), new IntArray(1));
+        this(windowId, playerInventory, getTileEntity(playerInventory, data), new IntArray(3));
     }
 
     public blockbreakercontainer(int windowId, PlayerInventory playerInventory, blockbreakertile tileEntity, IIntArray iIntArray) {
         super(ModContainerTypes.BLOCK_BREAKER_CONTAINER.get(), windowId);
         this.tileEntity = tileEntity;
-        this.furnaceData = iIntArray;
-        this.canInteractWithCallable = IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos());
+        this.breakerData = iIntArray;
+        this.canInteractWithCallable = IWorldPosCallable.of(Objects.requireNonNull(tileEntity.getWorld()), tileEntity.getPos());
 
         final int playerInventoryStartX = 8;
         final int playerInventoryStartY = 84;
@@ -114,15 +114,23 @@ public class blockbreakercontainer extends Container implements IRedstoneControl
 
     @OnlyIn(Dist.CLIENT)
     public int getRedstoneControl() {
-        return this.furnaceData.get(0);
+        return this.breakerData.get(0);
     }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getCurrentTimeToBreak() {
+        return this.breakerData.get(1);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getTotalTimeToBreak() { return this.breakerData.get(2); }
 
     @Override
     public void redstonecontrolchange() {
-        if (this.furnaceData.get(0)==0){
-            this.furnaceData.set(0,1);
+        if (this.breakerData.get(0)==0){
+            this.breakerData.set(0,1);
         }else{
-            this.furnaceData.set(0,0);
+            this.breakerData.set(0,0);
         }
     }
 }

@@ -44,7 +44,7 @@ public class redstoneclocktile extends TileEntity implements ITickableTileEntity
     }
 
     private int redstoneTotalTime=100;
-    private int redstoneCurrentTime=100;
+    private int redstoneCurrentTime=redstoneTotalTime;
 
     protected final IIntArray redstoneData = new IIntArray() {
         public int get(int index) {
