@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "allyouneed:block/block_placer/block_placer_other_side",
+    "down": "allyouneed:block/block_placer/block_placer_other_side",
+    "up": "allyouneed:block/block_placer/block_placer_other_side",
+    "east": "allyouneed:block/block_placer/block_placer_east",
+    "west": "allyouneed:block/block_placer/block_placer_west",
+    "north": "allyouneed:block/block_placer/block_placer_north",
+    "south": "allyouneed:block/block_placer/block_placer_other_side"
+  }
+}

@@ -1,8 +1,11 @@
-package com.alexincube.allyouneed.blocks.block_breaker;
+package com.alexincube.allyouneed.blocks.block_placer;
 
 import com.alexincube.allyouneed.setup.ModBlocks;
 import com.alexincube.allyouneed.setup.ModTileEntityTypes;
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -29,21 +32,23 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static com.alexincube.allyouneed.blocks.block_breaker.blockbreaker.REDSTONE_SIGNAL;
+
+import static com.alexincube.allyouneed.blocks.MachineBlockBase.REDSTONE_SIGNAL;
+import static net.minecraft.block.Block.getBlockFromItem;
 import static net.minecraft.state.properties.BlockStateProperties.FACING;
 
 
-public class blockbreakertile extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
+public class blockplacertile extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
 
     @Nullable
     @OnlyIn(Dist.CLIENT)
-    public blockbreakertile(final TileEntityType<?> type){
+    public blockplacertile(final TileEntityType<?> type){
         super(type);
     }
 
-    public blockbreakertile() {
-        this(ModTileEntityTypes.block_breaker_tile.get());
+    public blockplacertile() {
+        this(ModTileEntityTypes.block_placer_tile.get());
     }
 
     public final ItemStackHandler inventory = new ItemStackHandler(11) {
@@ -55,7 +60,7 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
             // Mark the tile entity as having changed whenever its inventory changes.
             // "markDirty" tells vanilla that the chunk containing the tile entity has
             // changed and means the game will save the chunk to disk later.
-            blockbreakertile.this.markDirty();
+            blockplacertile.this.markDirty();
         }
     };
 
@@ -93,30 +98,26 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
     public void tick() {
         if (!this.world.isRemote) {
             boolean redstonesignal = world.getBlockState(pos).get(REDSTONE_SIGNAL);
-            if ((redstonesignal & redstoneControl == 1) || redstoneControl == 0)  {
+            if ((redstonesignal & redstoneControl == 1) || redstoneControl == 0) {
                 Direction direction = world.getBlockState(pos).get(FACING);
                 BlockPos blockp = pos.offset(direction, 1);//Get XYZ block which need to break
                 Block block = world.getBlockState(blockp).getBlock();//Get block which need to break
-                if (world.isAirBlock(blockp) == false) {
-                    if (block.hasTileEntity(getBlockState()) == false) {
-                            ItemStack itemstackfromblock = new ItemStack(Item.getItemFromBlock(block));//Get ITEMSTACK from BLOCK which we break
-                            for (int i = 0; i < 9; i++) {
-                                ItemStack itemstack = this.inventory.getStackInSlot(i);
-                                if (itemstack.getItem().equals(itemstackfromblock.getItem()) & itemstack.getCount() < itemstack.getMaxStackSize()) {
-                                    world.destroyBlock(blockp, false);//just break the block
-                                    itemstack.grow(itemstack.getCount());
-                                    break;
-                                } else if (itemstack.isEmpty()) {
-                                    world.destroyBlock(blockp, false);//just break the block
-                                    this.inventory.insertItem(i,itemstackfromblock,false);
-                                    break;
-                                }
+                if (world.isAirBlock(blockp) == true) {
+                    for (int i = 0; i < 9; i++) {
+                        ItemStack itemstack = this.inventory.getStackInSlot(i);
+                        if (itemstack!=ItemStack.EMPTY){
+                            BlockState block1 = getBlockFromItem(itemstack.getItem()).getDefaultState();
+                            if (block1.getBlock()!= Blocks.AIR) {
+                                world.setBlockState(blockp, block1);
+                                itemstack.shrink(1);
+                                break;
                             }
                         }
                     }
                 }
                 this.markDirty();
             }
+        }
     }
 
 
@@ -154,13 +155,13 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
 
     @Nonnull
     public Container createMenu(final int windowId, final PlayerInventory inventory, final PlayerEntity player) {
-        return new blockbreakercontainer(windowId, inventory, this,furnaceData);
+        return new blockplacercontainer(windowId, inventory, this,furnaceData);
     }
 
     @Nonnull
 
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent(ModBlocks.block_breaker.get().getTranslationKey());
+        return new TranslationTextComponent(ModBlocks.block_placer.get().getTranslationKey());
     }
 
 }

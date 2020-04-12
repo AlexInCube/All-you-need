@@ -1,4 +1,4 @@
-package com.alexincube.allyouneed.blocks.block_breaker;
+package com.alexincube.allyouneed.blocks.block_placer;
 
 import com.alexincube.allyouneed.allyouneed;
 import com.alexincube.allyouneed.packets.PacketChangeRedstoneControl;
@@ -10,10 +10,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 
-public class blockbreakergui extends ContainerScreen<blockbreakercontainer> {
+public class blockplacergui extends ContainerScreen<blockplacercontainer> {
     private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(allyouneed.MODID, "textures/gui/container/block_breaker_gui.png");
 
-    public blockbreakergui(final blockbreakercontainer container, final PlayerInventory inventory, final ITextComponent title) {
+    public blockplacergui(final blockplacercontainer container, final PlayerInventory inventory, final ITextComponent title) {
         super(container, inventory, title);
     }
 

@@ -1,6 +1,7 @@
 package com.alexincube.allyouneed.setup;
 
 import com.alexincube.allyouneed.allyouneed;
+import com.alexincube.allyouneed.blocks.block_placer.blockplacergui;
 import com.alexincube.allyouneed.blocks.block_breaker.blockbreakergui;
 import com.alexincube.allyouneed.blocks.redstone_clock.redstoneclockgui;
 import com.alexincube.allyouneed.blocks.trash_can.trashcangui;
@@ -37,6 +38,7 @@ public final class ClientModEventSubscriber {
             ScreenManager.registerFactory(ModContainerTypes.BLOCK_BREAKER_CONTAINER.get(), blockbreakergui::new);
             ScreenManager.registerFactory(ModContainerTypes.TRASH_CAN_CONTAINER.get(), trashcangui::new);
             ScreenManager.registerFactory(ModContainerTypes.REDSTONE_CLOCK_CONTAINER.get(), redstoneclockgui::new);
+            ScreenManager.registerFactory(ModContainerTypes.BLOCK_PLACER_CONTAINER.get(), blockplacergui::new);
             LOGGER.debug("Registered ContainerType Screens");
         });
 

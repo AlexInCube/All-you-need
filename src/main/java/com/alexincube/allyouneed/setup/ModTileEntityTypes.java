@@ -1,6 +1,7 @@
 package com.alexincube.allyouneed.setup;
 
 import com.alexincube.allyouneed.allyouneed;
+import com.alexincube.allyouneed.blocks.block_placer.blockplacertile;
 import com.alexincube.allyouneed.blocks.block_breaker.blockbreakertile;
 import com.alexincube.allyouneed.blocks.redstone_clock.redstoneclocktile;
 import com.alexincube.allyouneed.blocks.trash_can.trashcantile;
@@ -27,5 +28,7 @@ public final class ModTileEntityTypes {
     public static final RegistryObject<TileEntityType<redstoneclocktile>> redstone_clock_tile = TILE_ENTITY_TYPES.register("redstone_clock_tile", () ->
             TileEntityType.Builder.create(redstoneclocktile::new, ModBlocks.redstone_clock.get()).build(null)
     );
-
+    public static final RegistryObject<TileEntityType<blockplacertile>> block_placer_tile = TILE_ENTITY_TYPES.register("block_placer_tile", () ->
+            TileEntityType.Builder.create(blockplacertile::new, ModBlocks.block_placer.get()).build(null)
+    );
 }

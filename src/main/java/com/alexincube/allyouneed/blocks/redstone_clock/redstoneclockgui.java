@@ -1,8 +1,8 @@
 package com.alexincube.allyouneed.blocks.redstone_clock;
 
 import com.alexincube.allyouneed.allyouneed;
+import com.alexincube.allyouneed.packets.PacketChangeRedstoneTime;
 import com.alexincube.allyouneed.setup.Networking;
-import com.alexincube.allyouneed.blocks.block_breaker.PacketChangeRedstoneBlockBreaker;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -11,9 +11,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-
-import java.util.regex.Pattern;
 
 public class redstoneclockgui extends ContainerScreen<redstoneclockcontainer> {
     private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(allyouneed.MODID, "textures/gui/container/redstone_clock_gui.png");
@@ -33,7 +30,7 @@ public class redstoneclockgui extends ContainerScreen<redstoneclockcontainer> {
         this.guiTop = (this.height - this.ySize) / 2;
         this.buttons.clear();
         this.getMinecraft().getTextureManager().bindTexture(BACKGROUND_TEXTURE);
-        this.addButton(new Button( this.guiLeft+50, this.guiTop+50, 50, 20, I18n.format("button.allyouneed.apply"), (button) -> {
+        this.addButton(new Button( this.guiLeft+70, this.guiTop+50, 50, 20, I18n.format("button.allyouneed.apply"), (button) -> {
             boolean noletter=true;
             for(int i=0;i<this.ticks.getText().length();i++){
                 if (!Character.isDigit(this.ticks.getText().charAt(i))){
@@ -44,7 +41,7 @@ public class redstoneclockgui extends ContainerScreen<redstoneclockcontainer> {
                 Networking.INSTANCE.sendToServer(new PacketChangeRedstoneTime(this.container.windowId, Integer.valueOf(this.ticks.getText())));
             }
         }));
-        this.ticks = new TextFieldWidget(this.font,  this.guiLeft+50, this.guiTop+20, 30, 20, I18n.format("textfield.allyouneed.ticks"));
+        this.ticks = new TextFieldWidget(this.font,  this.guiLeft+70, this.guiTop+20, 50, 20, I18n.format("textfield.allyouneed.ticks"));
         this.ticks.setMaxStringLength(5);
         this.children.add(this.ticks);
     }

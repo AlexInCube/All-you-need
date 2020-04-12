@@ -1,4 +1,4 @@
-package com.alexincube.allyouneed.blocks.block_breaker;
+package com.alexincube.allyouneed.blocks.block_placer;
 
 import com.alexincube.allyouneed.packets.IRedstoneControlChange;
 import com.alexincube.allyouneed.setup.ModBlocks;
@@ -21,18 +21,18 @@ import javax.annotation.Nonnull;
 import java.util.Objects;
 
 
-public class blockbreakercontainer extends Container implements IRedstoneControlChange {
+public class blockplacercontainer extends Container implements IRedstoneControlChange {
 
-    public final blockbreakertile tileEntity;
+    public final blockplacertile tileEntity;
     private final IWorldPosCallable canInteractWithCallable;
     private final IIntArray furnaceData;
 
-    public blockbreakercontainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer data) {
+    public blockplacercontainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer data) {
         this(windowId, playerInventory, getTileEntity(playerInventory, data), new IntArray(1));
     }
 
-    public blockbreakercontainer(int windowId, PlayerInventory playerInventory, blockbreakertile tileEntity, IIntArray iIntArray) {
-        super(ModContainerTypes.BLOCK_BREAKER_CONTAINER.get(), windowId);
+    public blockplacercontainer(int windowId, PlayerInventory playerInventory, blockplacertile tileEntity, IIntArray iIntArray) {
+        super(ModContainerTypes.BLOCK_PLACER_CONTAINER.get(), windowId);
         this.tileEntity = tileEntity;
         this.furnaceData = iIntArray;
         this.canInteractWithCallable = IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos());
@@ -68,12 +68,12 @@ public class blockbreakercontainer extends Container implements IRedstoneControl
     }
 
 
-    private static blockbreakertile getTileEntity(final PlayerInventory playerInventory, final PacketBuffer data) {
+    private static blockplacertile getTileEntity(final PlayerInventory playerInventory, final PacketBuffer data) {
         Objects.requireNonNull(playerInventory, "playerInventory cannot be null!");
         Objects.requireNonNull(data, "data cannot be null!");
         final TileEntity tileAtPos = playerInventory.player.world.getTileEntity(data.readBlockPos());
-        if (tileAtPos instanceof blockbreakertile)
-            return (blockbreakertile) tileAtPos;
+        if (tileAtPos instanceof blockplacertile)
+            return (blockplacertile) tileAtPos;
         throw new IllegalStateException("Tile entity is not correct! " + tileAtPos);
     }
 
@@ -109,7 +109,7 @@ public class blockbreakercontainer extends Container implements IRedstoneControl
 
     @Override
     public boolean canInteractWith(@Nonnull final PlayerEntity player) {
-        return isWithinUsableDistance(canInteractWithCallable, player, ModBlocks.block_breaker.get());
+        return isWithinUsableDistance(canInteractWithCallable, player, ModBlocks.block_placer.get());
     }
 
     @OnlyIn(Dist.CLIENT)

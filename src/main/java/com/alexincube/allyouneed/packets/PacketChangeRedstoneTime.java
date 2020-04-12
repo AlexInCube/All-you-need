@@ -1,6 +1,5 @@
-package com.alexincube.allyouneed.blocks.redstone_clock;
+package com.alexincube.allyouneed.packets;
 
-import com.alexincube.allyouneed.blocks.block_breaker.blockbreakercontainer;
 import com.alexincube.allyouneed.blocks.redstone_clock.redstoneclockcontainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.network.PacketBuffer;
@@ -8,11 +7,11 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketChangeRedstoneClock {
+public class PacketChangeRedstoneTime {
     private final int windowId;
-    private final int rc;
+    private int rc;
 
-    public PacketChangeRedstoneClock(PacketBuffer buf){
+    public PacketChangeRedstoneTime(PacketBuffer buf){
         windowId = buf.readInt();
         rc = buf.readInt();
     }
@@ -22,7 +21,7 @@ public class PacketChangeRedstoneClock {
         buf.writeInt(rc);
     }
 
-    public PacketChangeRedstoneClock(int windowId, int rc){
+    public PacketChangeRedstoneTime(int windowId, int rc){
         this.windowId = windowId;
         this.rc = rc;
     }
@@ -31,7 +30,8 @@ public class PacketChangeRedstoneClock {
         ctx.get().enqueueWork(() -> {
             Container playercont=ctx.get().getSender().openContainer;
             if (windowId == playercont.windowId){
-                ((redstoneclockcontainer)playercont).setRedstoneControl(rc);
+                if (rc<10){rc=10;}
+                ((redstoneclockcontainer)playercont).setRedstoneTotalTime(rc);
             }
 
             });

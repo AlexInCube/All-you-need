@@ -1,0 +1,10 @@
+{
+  "variants":{
+    "facing=north": {"model": "allyouneed:block/block_placer"},
+    "facing=south": {"model": "allyouneed:block/block_placer","y": 180},
+    "facing=west": {"model": "allyouneed:block/block_placer","y": 270},
+    "facing=east": {"model": "allyouneed:block/block_placer","y": 90},
+    "facing=up": {"model": "allyouneed:block/block_placer","x": -90},
+    "facing=down": {"model": "allyouneed:block/block_placer","x": 90}
+  }
+}
