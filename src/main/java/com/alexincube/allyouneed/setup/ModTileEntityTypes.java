@@ -3,6 +3,7 @@ package com.alexincube.allyouneed.setup;
 import com.alexincube.allyouneed.allyouneed;
 import com.alexincube.allyouneed.blocks.block_placer.blockplacertile;
 import com.alexincube.allyouneed.blocks.block_breaker.blockbreakertile;
+import com.alexincube.allyouneed.blocks.crafting_station.craftingstationtile;
 import com.alexincube.allyouneed.blocks.redstone_clock.redstoneclocktile;
 import com.alexincube.allyouneed.blocks.trash_can.trashcantile;
 import com.alexincube.allyouneed.blocks.wood_crate.woodcratetile;
@@ -30,5 +31,8 @@ public final class ModTileEntityTypes {
     );
     public static final RegistryObject<TileEntityType<blockplacertile>> block_placer_tile = TILE_ENTITY_TYPES.register("block_placer_tile", () ->
             TileEntityType.Builder.create(blockplacertile::new, ModBlocks.block_placer.get()).build(null)
+    );
+    public static final RegistryObject<TileEntityType<craftingstationtile>> crafting_station_tile = TILE_ENTITY_TYPES.register("crafting_station_tile", () ->
+            TileEntityType.Builder.create(craftingstationtile::new, ModBlocks.crafting_station.get()).build(null)
     );
 }

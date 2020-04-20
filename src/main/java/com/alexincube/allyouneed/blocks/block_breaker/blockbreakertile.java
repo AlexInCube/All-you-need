@@ -46,7 +46,7 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
         this(ModTileEntityTypes.block_breaker_tile.get());
     }
 
-    public final ItemStackHandler inventory = new ItemStackHandler(11) {
+    public final ItemStackHandler inventory = new ItemStackHandler(10) {
 
 
         @Override

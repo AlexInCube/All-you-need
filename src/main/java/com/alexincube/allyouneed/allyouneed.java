@@ -26,9 +26,8 @@ public class allyouneed
         ModItems.ITEMS.register(modEventBus);
         ModTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         ModContainerTypes.CONTAINER_TYPES.register(modEventBus);
+        ModEntityTypes.ENTITY_TYPES.register(modEventBus);
         ModSounds.SOUNDS.register(modEventBus);
         Networking.registerMessages();
-
-
     }
 }

@@ -1,0 +1,39 @@
+package com.alexincube.allyouneed.joke;
+
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.network.IPacket;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
+
+public class DanyaEntity extends ZombieEntity {
+    public DanyaEntity(final EntityType<? extends DanyaEntity> entityType, final World world) {
+        super(entityType, world);
+    }
+
+    @Override
+    protected void registerAttributes() {
+        super.registerAttributes();
+
+        final double baseSpeed = this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getBaseValue();
+        final double baseHealth = this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
+        // Multiply base health and base speed by one and a half
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(baseSpeed * 1.5D);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).setBaseValue(1000);
+    }
+
+
+    public DanyaEntity createChild(final AgeableEntity parent) {
+        // Use getType to support overrides in subclasses
+        return (DanyaEntity) getType().create(this.world);
+    }
+
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+}

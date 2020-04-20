@@ -1,9 +1,12 @@
 package com.alexincube.allyouneed.setup;
 
 import com.alexincube.allyouneed.allyouneed;
+import com.alexincube.allyouneed.items.ModdedSpawnEggItem;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -40,5 +43,9 @@ public final class ModEventSubcriber {
         LOGGER.debug("Registered BlockItems");
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onPostRegisterEntities(final RegistryEvent.Register<EntityType<?>> event) {
+        ModdedSpawnEggItem.initUnaddedEggs();
+    }
 
 }

@@ -48,7 +48,6 @@ public class blockplacercontainer extends Container implements IRedstoneControlC
                 this.addSlot(new SlotItemHandler(tileEntity.inventory, j + i*3, 62 + j*18, 18 + i*18));
             }
         }
-        this.addSlot(new SlotItemHandler(tileEntity.inventory, 10, 26, 36));
 
 
         // Player Top Inventory slots

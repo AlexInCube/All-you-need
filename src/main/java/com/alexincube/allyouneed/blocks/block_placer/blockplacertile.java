@@ -51,7 +51,7 @@ public class blockplacertile extends TileEntity implements ITickableTileEntity, 
         this(ModTileEntityTypes.block_placer_tile.get());
     }
 
-    public final ItemStackHandler inventory = new ItemStackHandler(11) {
+    public final ItemStackHandler inventory = new ItemStackHandler(10) {
 
 
         @Override
