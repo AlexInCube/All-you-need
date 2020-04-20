@@ -1,5 +1,5 @@
 {
-	"credit": "Made with Blockbench",
+	"parent": "block/block",
 	"textures": {
 		"0": "block/oak_planks",
 		"1": "block/dark_oak_log",
@@ -346,36 +346,6 @@
 			}
 		}
 	],
-	"display": {
-		"thirdperson_righthand": {
-			"rotation": [-32, 0, 0],
-			"translation": [0, 1.25, 1],
-			"scale": [0.4, 0.4, 0.4]
-		},
-		"thirdperson_lefthand": {
-			"rotation": [-32, 0, 0],
-			"translation": [0, 1.25, 1],
-			"scale": [0.4, 0.4, 0.4]
-		},
-		"firstperson_righthand": {
-			"translation": [0, 1.25, 1],
-			"scale": [0.4, 0.4, 0.4]
-		},
-		"firstperson_lefthand": {
-			"translation": [0, 1.25, 1],
-			"scale": [0.4, 0.4, 0.4]
-		},
-		"ground": {
-			"scale": [0.4, 0.4, 0.4]
-		},
-		"gui": {
-			"rotation": [45, 45, 0],
-			"scale": [0.55, 0.55, 0.55]
-		},
-		"fixed": {
-			"translation": [0, 0, 4.25]
-		}
-	},
 	"groups": [
 		{
 			"name": "Center",

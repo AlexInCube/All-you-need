@@ -32,6 +32,7 @@ public class PacketChangeRedstoneTime {
             if (windowId == playercont.windowId){
                 if (rc<10){rc=10;}
                 ((redstoneclockcontainer)playercont).setRedstoneTotalTime(rc);
+                ((redstoneclockcontainer)playercont).setRedstoneCurrentTime(rc);
             }
 
             });
