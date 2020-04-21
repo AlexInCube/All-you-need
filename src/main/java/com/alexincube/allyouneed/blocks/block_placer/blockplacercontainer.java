@@ -25,7 +25,7 @@ public class blockplacercontainer extends Container implements IRedstoneControlC
 
     public final blockplacertile tileEntity;
     private final IWorldPosCallable canInteractWithCallable;
-    private final IIntArray furnaceData;
+    private final IIntArray placerData;
 
     public blockplacercontainer(final int windowId, final PlayerInventory playerInventory, final PacketBuffer data) {
         this(windowId, playerInventory, getTileEntity(playerInventory, data), new IntArray(1));
@@ -34,7 +34,7 @@ public class blockplacercontainer extends Container implements IRedstoneControlC
     public blockplacercontainer(int windowId, PlayerInventory playerInventory, blockplacertile tileEntity, IIntArray iIntArray) {
         super(ModContainerTypes.BLOCK_PLACER_CONTAINER.get(), windowId);
         this.tileEntity = tileEntity;
-        this.furnaceData = iIntArray;
+        this.placerData = iIntArray;
         this.canInteractWithCallable = IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos());
 
         final int playerInventoryStartX = 8;
@@ -113,15 +113,15 @@ public class blockplacercontainer extends Container implements IRedstoneControlC
 
     @OnlyIn(Dist.CLIENT)
     public int getRedstoneControl() {
-        return this.furnaceData.get(0);
+        return this.placerData.get(0);
     }
 
     @Override
     public void redstonecontrolchange() {
-        if (this.furnaceData.get(0)==0){
-            this.furnaceData.set(0,1);
+        if (this.placerData.get(0)==0){
+            this.placerData.set(0,1);
         }else{
-            this.furnaceData.set(0,0);
+            this.placerData.set(0,0);
         }
     }
 }

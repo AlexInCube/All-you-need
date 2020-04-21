@@ -20,6 +20,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -112,26 +113,28 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
                     Block block = world.getBlockState(blockp).getBlock();//Get block which need to break
                     if (world.isAirBlock(blockp) == false) {
                         if (block.hasTileEntity(getBlockState()) == false) {
-                            ItemStack itemstackfromblock = new ItemStack(Item.getItemFromBlock(block));//Get ITEMSTACK from BLOCK which we break
-                            for (int i = 0; i < 9; i++) {
-                                ItemStack itemstack = this.inventory.getStackInSlot(i);
-                                if (itemstack.getItem().equals(itemstackfromblock.getItem()) & itemstack.getCount() < itemstack.getMaxStackSize()) {
-                                    world.destroyBlock(blockp, false);//just break the block
-                                    itemstack.grow(itemstack.getCount());
-                                    break;
-                                } else if (itemstack.isEmpty()) {
-                                    world.destroyBlock(blockp, false);//just break the block
-                                    this.inventory.insertItem(i, itemstackfromblock, false);
-                                    break;
+                            if (block.getHarvestLevel(getBlockState()) >=0) {
+                                ItemStack itemstackfromblock = new ItemStack(Item.getItemFromBlock(block));//Get ITEMSTACK from BLOCK which we break
+                                for (int i = 0; i < 9; i++) {
+                                    ItemStack itemstack = this.inventory.getStackInSlot(i);
+                                    if (itemstack.getItem().equals(itemstackfromblock.getItem()) & itemstack.getCount() < itemstack.getMaxStackSize()) {
+                                        world.destroyBlock(blockp, false);//just break the block
+                                        itemstack.grow(itemstack.getCount());
+                                        break;
+                                    } else if (itemstack.isEmpty()) {
+                                        world.destroyBlock(blockp, false);//just break the block
+                                        this.inventory.insertItem(i, itemstackfromblock, false);
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
-                    currenttimetobreak=totaltimetobreak;
+                    currenttimetobreak = totaltimetobreak;
                 }
+                this.markDirty();
             }
-            this.markDirty();
-            }
+        }
     }
 
 
@@ -177,7 +180,6 @@ public class blockbreakertile extends TileEntity implements ITickableTileEntity,
     }
 
     @Nonnull
-
     public ITextComponent getDisplayName() {
         return new TranslationTextComponent(ModBlocks.block_breaker.get().getTranslationKey());
     }

@@ -66,9 +66,9 @@ public class blockplacertile extends TileEntity implements ITickableTileEntity, 
 
     // Store the capability lazy optionals as fields to keep the amount of objects we use to a minimum
     private final LazyOptional<ItemStackHandler> inventoryCapabilityExternal = LazyOptional.of(() -> this.inventory);
-    private int redstoneControl;
+    private int redstoneControl=1;
 
-    protected final IIntArray furnaceData = new IIntArray() {
+    protected final IIntArray placerData = new IIntArray() {
         public int get(int index) {
             switch (index) {
                 case 0:
@@ -101,7 +101,6 @@ public class blockplacertile extends TileEntity implements ITickableTileEntity, 
             if ((redstonesignal & redstoneControl == 1) || redstoneControl == 0) {
                 Direction direction = world.getBlockState(pos).get(FACING);
                 BlockPos blockp = pos.offset(direction, 1);//Get XYZ block which need to break
-                Block block = world.getBlockState(blockp).getBlock();//Get block which need to break
                 if (world.isAirBlock(blockp) == true) {
                     for (int i = 0; i < 9; i++) {
                         ItemStack itemstack = this.inventory.getStackInSlot(i);
@@ -155,7 +154,7 @@ public class blockplacertile extends TileEntity implements ITickableTileEntity, 
 
     @Nonnull
     public Container createMenu(final int windowId, final PlayerInventory inventory, final PlayerEntity player) {
-        return new blockplacercontainer(windowId, inventory, this,furnaceData);
+        return new blockplacercontainer(windowId, inventory, this,this.placerData);
     }
 
     @Nonnull
