@@ -1,14 +1,19 @@
 package com.alexincube.allyouneed.blocks.wood_crate;
 
+import com.alexincube.allyouneed.setup.ModBlocks;
 import com.alexincube.allyouneed.setup.ModTileEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ShulkerBoxTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -39,17 +44,23 @@ public class woodcrate extends Block {
         return ModTileEntityTypes.wood_crate_tile.get().create();
     }
 
-    @Override
-    public void onReplaced(BlockState oldState, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (oldState.getBlock() != newState.getBlock()) {
-            TileEntity tileEntity = worldIn.getTileEntity(pos);
-            if (tileEntity instanceof woodcratetile) {
-                final ItemStackHandler inventory = ((woodcratetile) tileEntity).inventory;
-                for (int slot = 0; slot < inventory.getSlots(); ++slot)
-                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), inventory.getStackInSlot(slot));
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        if (tileentity instanceof woodcratetile) {
+            woodcratetile woodcratetileentity = (woodcratetile)tileentity;
+            if (!worldIn.isRemote) {
+                ItemStack itemstack = new ItemStack(ModBlocks.wood_crate.get());
+                CompoundNBT compoundnbt = woodcratetileentity.write(new CompoundNBT());
+                if (!compoundnbt.isEmpty()) {
+                    itemstack.setTagInfo("BlockEntityTag", compoundnbt);
+                }
+                ItemEntity itementity = new ItemEntity(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), itemstack);
+                itementity.setDefaultPickupDelay();
+                worldIn.addEntity(itementity);
             }
         }
-        super.onReplaced(oldState, worldIn, pos, newState, isMoving);
+
+        super.onBlockHarvested(worldIn, pos, state, player);
     }
 
     @Override
