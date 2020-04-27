@@ -9,6 +9,7 @@
 	"block.allyouneed.trash_can": "Trash Can",
 	"block.allyouneed.redstone_clock": "Redstone Clock",
 	"block.allyouneed.crafting_station": "Crafting Station",
+	"block.allyouneed.sprinkler": "Sprinkler",
 	"itemGroup.allyouneed":"All You Need",
 	"description.allyouneed.angel_block_placer": "§8§oIf you right click in air, you create angel block below you if below dont exists any block",
 	"item.allyouneed.danya_spawn_egg": "Daniil Davkin Spawn Egg",

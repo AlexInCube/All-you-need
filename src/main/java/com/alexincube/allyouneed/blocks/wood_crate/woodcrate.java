@@ -9,11 +9,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ShulkerBoxTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -23,7 +21,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.items.ItemStackHandler;
 
 public class woodcrate extends Block {
     public woodcrate(){

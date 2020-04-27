@@ -1,6 +1,6 @@
 package com.alexincube.allyouneed.blocks.block_placer;
 
-import com.alexincube.allyouneed.GuiButtonRedstoneControl;
+import com.alexincube.allyouneed.guithings.GuiButtonRedstoneControl;
 import com.alexincube.allyouneed.allyouneed;
 import com.alexincube.allyouneed.packets.PacketChangeRedstoneControl;
 import com.alexincube.allyouneed.setup.Networking;
@@ -28,10 +28,7 @@ public class blockplacergui extends ContainerScreen<blockplacercontainer> {
     @Override
     protected void init() {
         super.init();
-        this.addButton(new GuiButtonRedstoneControl(this.guiLeft+133,this.guiTop+35,(button) -> {
-            ((GuiButtonRedstoneControl)button).redstonemode = this.container.getRedstoneControl();
-            Networking.INSTANCE.sendToServer(new PacketChangeRedstoneControl(this.container.windowId));
-        }));
+        this.addButton(new GuiButtonRedstoneControl(this.guiLeft+133,this.guiTop+35,this.container,(button) -> { }));
     }
 
     @Override
@@ -63,7 +60,6 @@ public class blockplacergui extends ContainerScreen<blockplacercontainer> {
 
         this.font.drawString(s, centerX, 6.0F, 0x404040);
         this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 93), 0x404040);
-        getMinecraft().getTextureManager().bindTexture(BACKGROUND_TEXTURE);
 
     }
 }

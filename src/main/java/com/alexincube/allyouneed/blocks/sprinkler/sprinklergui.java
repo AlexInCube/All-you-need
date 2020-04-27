@@ -1,4 +1,4 @@
-package com.alexincube.allyouneed.blocks.block_breaker;
+package com.alexincube.allyouneed.blocks.sprinkler;
 
 import com.alexincube.allyouneed.guithings.GuiButtonRedstoneControl;
 import com.alexincube.allyouneed.allyouneed;
@@ -11,10 +11,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 
-public class blockbreakergui extends ContainerScreen<blockbreakercontainer> {
+public class sprinklergui extends ContainerScreen<sprinklercontainer> {
     private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(allyouneed.MODID, "textures/gui/container/block_breaker_gui.png");
 
-    public blockbreakergui(final blockbreakercontainer container, final PlayerInventory inventory, final ITextComponent title) {
+    public sprinklergui(final sprinklercontainer container, final PlayerInventory inventory, final ITextComponent title) {
         super(container, inventory, title);
     }
 
@@ -28,7 +28,7 @@ public class blockbreakergui extends ContainerScreen<blockbreakercontainer> {
     @Override
     protected void init() {
         super.init();
-        this.addButton(new GuiButtonRedstoneControl(this.guiLeft+133,this.guiTop+35,this.container,(button) -> {}));
+        this.addButton(new GuiButtonRedstoneControl(this.guiLeft+133,this.guiTop+35,this.container,(button) -> { }));
     }
 
     @Override
@@ -60,7 +60,6 @@ public class blockbreakergui extends ContainerScreen<blockbreakercontainer> {
 
         this.font.drawString(s, centerX, 6.0F, 0x404040);
         this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float) (this.ySize - 93), 0x404040);
-        getMinecraft().getTextureManager().bindTexture(BACKGROUND_TEXTURE);
-        this.font.drawString(this.container.getCurrentTimeToBreak()+"/"+this.container.getTotalTimeToBreak(), 8.0F, 10, 0x404040);
+
     }
 }

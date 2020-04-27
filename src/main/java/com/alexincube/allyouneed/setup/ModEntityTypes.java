@@ -16,7 +16,7 @@ public final class ModEntityTypes {
     public static final String DANYA_NAME = "danya";
     public static final RegistryObject<EntityType<DanyaEntity>> DANYA = ENTITY_TYPES.register(DANYA_NAME, () ->
             EntityType.Builder.<DanyaEntity>create(DanyaEntity::new, EntityClassification.CREATURE)
-                    .size(EntityType.PIG.getWidth(), EntityType.PIG.getHeight())
+                    .size(EntityType.ZOMBIE.getWidth(), EntityType.ZOMBIE.getHeight())
                     .build(new ResourceLocation(allyouneed.MODID, DANYA_NAME).toString())
     );
 

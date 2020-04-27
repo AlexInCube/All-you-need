@@ -5,13 +5,18 @@ import com.alexincube.allyouneed.blocks.block_placer.blockplacergui;
 import com.alexincube.allyouneed.blocks.block_breaker.blockbreakergui;
 import com.alexincube.allyouneed.blocks.crafting_station.craftingstationgui;
 import com.alexincube.allyouneed.blocks.redstone_clock.redstoneclockgui;
+import com.alexincube.allyouneed.blocks.sprinkler.sprinklergui;
+import com.alexincube.allyouneed.blocks.sprinkler.sprinklertilerenderer;
 import com.alexincube.allyouneed.blocks.trash_can.trashcangui;
 import com.alexincube.allyouneed.blocks.wood_crate.woodcrategui;
 import com.alexincube.allyouneed.joke.DanyaRenderer;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -33,7 +38,8 @@ public final class ClientModEventSubscriber {
      */
     @SubscribeEvent
     public static void onFMLClientSetupEvent(final FMLClientSetupEvent event) {
-
+        // Register TileEntity Renderers
+        ClientRegistry.bindTileEntityRenderer(ModTileEntityTypes.sprinkler_tile.get(), sprinklertilerenderer::new);
         // Register Entity Renderers
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.DANYA.get(), DanyaRenderer::new);
         LOGGER.debug("Registered Entity Renderers");
@@ -46,7 +52,10 @@ public final class ClientModEventSubscriber {
             ScreenManager.registerFactory(ModContainerTypes.REDSTONE_CLOCK_CONTAINER.get(), redstoneclockgui::new);
             ScreenManager.registerFactory(ModContainerTypes.BLOCK_PLACER_CONTAINER.get(), blockplacergui::new);
             ScreenManager.registerFactory(ModContainerTypes.CRAFTING_STATION_CONTAINER.get(), craftingstationgui::new);
+            ScreenManager.registerFactory(ModContainerTypes.SPRINKLER_CONTAINER.get(), sprinklergui::new);
             LOGGER.debug("Registered ContainerType Screens");
         });
+
+        RenderTypeLookup.setRenderLayer(ModBlocks.sprinkler.get(), RenderType.getCutoutMipped());
     }
 }

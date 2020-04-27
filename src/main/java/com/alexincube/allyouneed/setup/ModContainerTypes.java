@@ -5,6 +5,7 @@ import com.alexincube.allyouneed.blocks.block_placer.blockplacercontainer;
 import com.alexincube.allyouneed.blocks.block_breaker.blockbreakercontainer;
 import com.alexincube.allyouneed.blocks.crafting_station.craftingstationcontainer;
 import com.alexincube.allyouneed.blocks.redstone_clock.redstoneclockcontainer;
+import com.alexincube.allyouneed.blocks.sprinkler.sprinklercontainer;
 import com.alexincube.allyouneed.blocks.trash_can.trashcancontainer;
 import com.alexincube.allyouneed.blocks.wood_crate.woodcratecontainer;
 import net.minecraft.inventory.container.ContainerType;
@@ -23,4 +24,5 @@ public final class ModContainerTypes {
     public static final RegistryObject<ContainerType<redstoneclockcontainer>> REDSTONE_CLOCK_CONTAINER = CONTAINER_TYPES.register("redstone_clock", () -> IForgeContainerType.create(redstoneclockcontainer::new));
     public static final RegistryObject<ContainerType<blockplacercontainer>> BLOCK_PLACER_CONTAINER = CONTAINER_TYPES.register("block_placer", () -> IForgeContainerType.create(blockplacercontainer::new));
     public static final RegistryObject<ContainerType<craftingstationcontainer>> CRAFTING_STATION_CONTAINER = CONTAINER_TYPES.register("crafting_station", () -> IForgeContainerType.create(craftingstationcontainer::new));
+    public static final RegistryObject<ContainerType<sprinklercontainer>> SPRINKLER_CONTAINER = CONTAINER_TYPES.register("sprinkler", () -> IForgeContainerType.create(sprinklercontainer::new));
 }

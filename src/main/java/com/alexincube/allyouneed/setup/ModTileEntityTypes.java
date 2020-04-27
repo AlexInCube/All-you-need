@@ -5,6 +5,7 @@ import com.alexincube.allyouneed.blocks.block_placer.blockplacertile;
 import com.alexincube.allyouneed.blocks.block_breaker.blockbreakertile;
 import com.alexincube.allyouneed.blocks.crafting_station.craftingstationtile;
 import com.alexincube.allyouneed.blocks.redstone_clock.redstoneclocktile;
+import com.alexincube.allyouneed.blocks.sprinkler.sprinklertile;
 import com.alexincube.allyouneed.blocks.trash_can.trashcantile;
 import com.alexincube.allyouneed.blocks.wood_crate.woodcratetile;
 import net.minecraft.tileentity.TileEntityType;
@@ -34,5 +35,8 @@ public final class ModTileEntityTypes {
     );
     public static final RegistryObject<TileEntityType<craftingstationtile>> crafting_station_tile = TILE_ENTITY_TYPES.register("crafting_station_tile", () ->
             TileEntityType.Builder.create(craftingstationtile::new, ModBlocks.crafting_station.get()).build(null)
+    );
+    public static final RegistryObject<TileEntityType<sprinklertile>> sprinkler_tile = TILE_ENTITY_TYPES.register("sprinkler_tile", () ->
+            TileEntityType.Builder.create(sprinklertile::new, ModBlocks.sprinkler.get()).build(null)
     );
 }

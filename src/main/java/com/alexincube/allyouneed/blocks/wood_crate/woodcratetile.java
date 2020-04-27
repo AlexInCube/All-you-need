@@ -28,7 +28,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 
-public class woodcratetile extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
+public class woodcratetile extends TileEntity implements INamedContainerProvider {
 
 
     @Nullable
@@ -56,10 +56,6 @@ public class woodcratetile extends TileEntity implements ITickableTileEntity, IN
 
     // Store the capability lazy optionals as fields to keep the amount of objects we use to a minimum
     private final LazyOptional<ItemStackHandler> inventoryCapabilityExternal = LazyOptional.of(() -> this.inventory);
-
-    @Override
-    public void tick(){
-    }
 
     @Override
     public void read(CompoundNBT tag) {
