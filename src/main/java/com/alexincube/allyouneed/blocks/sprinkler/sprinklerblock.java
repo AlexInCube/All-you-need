@@ -32,6 +32,7 @@ import java.util.Random;
 
 public class sprinklerblock extends Block{
     public static final BooleanProperty REDSTONE_SIGNAL = BooleanProperty.create("redstone_signal");
+    public static final BooleanProperty WORK = BooleanProperty.create("work");
 
     public sprinklerblock(){
         super(Block.Properties.create(Material.IRON)
@@ -41,16 +42,17 @@ public class sprinklerblock extends Block{
                 .sound(SoundType.METAL)
                 .notSolid()
         );
-        this.setDefaultState(this.stateContainer.getBaseState().with(REDSTONE_SIGNAL, false));
+        this.setDefaultState(this.stateContainer.getBaseState().with(REDSTONE_SIGNAL, false).with(WORK,false));
     }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(REDSTONE_SIGNAL);
+        builder.add(WORK);
     }
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(REDSTONE_SIGNAL, Boolean.valueOf(context.getWorld().isBlockPowered(context.getPos())));
+        return this.getDefaultState().with(REDSTONE_SIGNAL, Boolean.valueOf(context.getWorld().isBlockPowered(context.getPos()))).with(WORK,true);
     }
 
     public boolean hasTileEntity(final BlockState state) {

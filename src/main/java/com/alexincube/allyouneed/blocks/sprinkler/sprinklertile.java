@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -30,15 +31,15 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import static com.alexincube.allyouneed.blocks.sprinkler.sprinklerblock.REDSTONE_SIGNAL;
+import static com.alexincube.allyouneed.blocks.sprinkler.sprinklerblock.WORK;
 import static net.minecraft.block.FarmlandBlock.MOISTURE;
 
 
 public class sprinklertile extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
-    private sprinklertile.AnimationStatus animationStatus = AnimationStatus.STOPPED;
     private int radius=11;
     private int coordcenter = (int) Math.floor(radius/2);
-
+    public Container cont;
 
     @Nullable
     @OnlyIn(Dist.CLIENT)
@@ -106,10 +107,13 @@ public class sprinklertile extends TileEntity implements ITickableTileEntity, IN
 
     @Override
     public void tick() {
-        updateAnimation();
+        if (world.getBlockState(pos).get(WORK)) {
+            updateAnimation();
+        }
         if (!this.world.isRemote) {
             boolean redstonesignal = world.getBlockState(pos).get(REDSTONE_SIGNAL);
             if ((redstonesignal & redstoneControl == 1) || redstoneControl == 0) {
+                world.setBlockState(pos, ModBlocks.sprinkler.get().getDefaultState().with(WORK,true).with(REDSTONE_SIGNAL,redstonesignal));
                     for(int i=0;i<radius;i++) {
                         for(int j=0;j<radius;j++) {
                             BlockPos pos1 = pos.add(-coordcenter+i,-1,-coordcenter+j);
@@ -131,7 +135,7 @@ public class sprinklertile extends TileEntity implements ITickableTileEntity, IN
                             }
                         }
                     }
-                }
+                }else{world.setBlockState(pos, ModBlocks.sprinkler.get().getDefaultState().with(WORK,false).with(REDSTONE_SIGNAL,redstonesignal));}
                 this.markDirty();
             }
     }
@@ -155,12 +159,6 @@ public class sprinklertile extends TileEntity implements ITickableTileEntity, IN
         return super.write(tag);
     }
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-    }
-
-
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> cap, @Nullable final Direction side) {
@@ -171,7 +169,7 @@ public class sprinklertile extends TileEntity implements ITickableTileEntity, IN
 
     @Nonnull
     public Container createMenu(final int windowId, final PlayerInventory inventory, final PlayerEntity player) {
-        return new sprinklercontainer(windowId, inventory, this,this.sprinklerdata);
+        return this.cont = new sprinklercontainer(windowId, inventory, this,this.sprinklerdata);
     }
 
     @Nonnull
@@ -187,22 +185,14 @@ public class sprinklertile extends TileEntity implements ITickableTileEntity, IN
         return INFINITE_EXTENT_AABB;
     }
 
-    public enum AnimationStatus {
-        WORKING,
-        STOPPED
+    public int getAngle(){
+        return this.angle;
     }
 
-    public sprinklertile.AnimationStatus getAnimationStatus() {
-        return this.animationStatus;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int returnangle(){
-        return angle;
-    }
-
-    protected void updateAnimation() {
-        this.angle+=2;
-        if (this.angle>358){this.angle=0;}
+    public void updateAnimation() {
+            this.angle += 2;
+            if (this.angle > 358) {
+                this.angle = 0;
+            }
     }
 }

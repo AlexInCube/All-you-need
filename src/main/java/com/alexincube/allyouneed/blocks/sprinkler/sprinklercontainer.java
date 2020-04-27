@@ -16,6 +16,7 @@ import net.minecraft.util.IntArray;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -78,7 +79,7 @@ public class sprinklercontainer extends Container implements IRedstoneControlCha
 
     @Nonnull
     @Override
-    public ItemStack transferStackInSlot(final PlayerEntity player, final int index) {
+    public ItemStack transferStackInSlot(final @NotNull PlayerEntity player, final int index) {
         ItemStack returnStack = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {
@@ -114,6 +115,11 @@ public class sprinklercontainer extends Container implements IRedstoneControlCha
     @OnlyIn(Dist.CLIENT)
     public int getRedstoneControl() {
         return this.sprinklerdata.get(0);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getAngle(){
+        return this.sprinklerdata.get(1);
     }
 
     @Override
