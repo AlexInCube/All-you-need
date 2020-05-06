@@ -24,25 +24,14 @@ public class sprinklertilerenderer extends TileEntityRenderer<sprinklertile> {
 
     @Override
     public void render(sprinklertile tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        boolean work = false;
-        if (tileEntityIn.hasWorld()) {
-            BlockState blockstate = tileEntityIn.getWorld().getBlockState(tileEntityIn.getPos());
-            if (blockstate.getBlock() instanceof sprinklerblock) {
-                work = blockstate.get(sprinklerblock.WORK);
-            }
-        }
         matrixStackIn.push();
         matrixStackIn.translate(0, 0.62, 0);//matrix up
         //move matrix to center and rotate it
         matrixStackIn.translate(0.5,0,0.5);
         angle = (int) (tileEntityIn.getAngle());//((sprinklercontainer)tileEntityIn.cont).getAngle();
 
-        if (work==true) {
-            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(angle+partialTicks*2));
-            angle2 = (int) (angle+partialTicks*2);
-        }else{
-            matrixStackIn.rotate(Vector3f.YP.rotationDegrees(angle2));
-        }
+        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(angle));
+
         matrixStackIn.translate(-0.5,0,-0.5);
 
         BlockRendererDispatcher blockRenderer = Minecraft.getInstance().getBlockRendererDispatcher();
@@ -51,5 +40,4 @@ public class sprinklertilerenderer extends TileEntityRenderer<sprinklertile> {
 
         matrixStackIn.pop();
     }
-
 }

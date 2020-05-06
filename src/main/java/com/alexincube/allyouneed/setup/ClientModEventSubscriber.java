@@ -57,5 +57,6 @@ public final class ClientModEventSubscriber {
         });
 
         RenderTypeLookup.setRenderLayer(ModBlocks.sprinkler.get(), RenderType.getCutoutMipped());
+        RenderTypeLookup.setRenderLayer(ModBlocks.rotator.get(), RenderType.getCutoutMipped());
     }
 }

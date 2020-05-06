@@ -3,6 +3,7 @@ package com.alexincube.allyouneed.items;
 import com.alexincube.allyouneed.setup.ModItemGroups;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
@@ -45,10 +46,11 @@ public class portable_nether_portal extends Item{
         if (!worldIn.isRemote) {
             if (entityLiving.world.dimension.isNether()) {
                 //playerIn.setPortal(playerIn.getPosition());
-                entityLiving.changeDimension(DimensionType.OVERWORLD);
+                TeleportationTools.teleport((ServerPlayerEntity) entityLiving,DimensionType.OVERWORLD,worldIn.getDimension().getSpawnCoordinate());
+
             }else{
                 //playerIn.setPortal(playerIn.getPosition());
-                entityLiving.changeDimension(DimensionType.THE_NETHER);
+                TeleportationTools.teleport((ServerPlayerEntity) entityLiving,DimensionType.THE_NETHER,worldIn.getDimension().getSpawnCoordinate());
             }
         }
         return stack;

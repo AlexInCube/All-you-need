@@ -29,13 +29,17 @@ public abstract class MachineBlockBase extends DirectionalBlock {
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(REDSTONE_SIGNAL, false));
     }
 
+    public MachineBlockBase(Properties sound) {
+        super(sound);
+    }
+
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING,REDSTONE_SIGNAL);
     }
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(FACING, context.getNearestLookingDirection().getOpposite().getOpposite()).with(REDSTONE_SIGNAL, Boolean.valueOf(context.getWorld().isBlockPowered(context.getPos())));
+        return this.getDefaultState().with(FACING, context.getNearestLookingDirection().getOpposite()).with(REDSTONE_SIGNAL, Boolean.valueOf(context.getWorld().isBlockPowered(context.getPos())));
     }
 
     public boolean hasTileEntity(final BlockState state) {

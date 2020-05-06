@@ -8,7 +8,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -18,6 +20,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -29,16 +32,18 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Random;
 
 import static com.alexincube.allyouneed.blocks.sprinkler.sprinklerblock.REDSTONE_SIGNAL;
-import static com.alexincube.allyouneed.blocks.sprinkler.sprinklerblock.WORK;
 import static net.minecraft.block.FarmlandBlock.MOISTURE;
+import static net.minecraftforge.common.util.BlockSnapshot.readFromNBT;
 
 
 public class sprinklertile extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
     private int radius=11;
     private int coordcenter = (int) Math.floor(radius/2);
+    private static final String ANGLE_TAG = "angle";
     public Container cont;
 
     @Nullable
@@ -107,13 +112,10 @@ public class sprinklertile extends TileEntity implements ITickableTileEntity, IN
 
     @Override
     public void tick() {
-        if (world.getBlockState(pos).get(WORK)) {
-            updateAnimation();
-        }
         if (!this.world.isRemote) {
             boolean redstonesignal = world.getBlockState(pos).get(REDSTONE_SIGNAL);
             if ((redstonesignal & redstoneControl == 1) || redstoneControl == 0) {
-                world.setBlockState(pos, ModBlocks.sprinkler.get().getDefaultState().with(WORK,true).with(REDSTONE_SIGNAL,redstonesignal));
+                updateAnimation();
                     for(int i=0;i<radius;i++) {
                         for(int j=0;j<radius;j++) {
                             BlockPos pos1 = pos.add(-coordcenter+i,-1,-coordcenter+j);
@@ -135,11 +137,11 @@ public class sprinklertile extends TileEntity implements ITickableTileEntity, IN
                             }
                         }
                     }
-                }else{world.setBlockState(pos, ModBlocks.sprinkler.get().getDefaultState().with(WORK,false).with(REDSTONE_SIGNAL,redstonesignal));}
+                world.notifyBlockUpdate(pos, this.getBlockState(),this.getBlockState(), 2);
+                }
                 this.markDirty();
             }
     }
-
 
     @Override
     public void read(CompoundNBT tag) {
@@ -189,10 +191,53 @@ public class sprinklertile extends TileEntity implements ITickableTileEntity, IN
         return this.angle;
     }
 
+    @Nullable
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        CompoundNBT tag = new CompoundNBT();
+        tag.putInt(ANGLE_TAG,this.angle);
+        return new SUpdateTileEntityPacket(this.pos,0,tag);
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return write(new CompoundNBT());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        super.onDataPacket(net, pkt);
+        BlockState state = this.world.getBlockState(this.pos);
+        this.angle = pkt.getNbtCompound().getInt(ANGLE_TAG);
+        this.world.notifyBlockUpdate(this.pos, state, state, 3);
+    }
+
     public void updateAnimation() {
             this.angle += 2;
             if (this.angle > 358) {
                 this.angle = 0;
             }
+        spawnWaterParticles(this.world, pos, 0, this.angle);
     }
+
+    public void spawnWaterParticles(IWorld worldIn, BlockPos posIn, int data, int angle) {
+        Random random = new Random();
+        if (data == 0) {
+            data = 15;
+        }
+
+        BlockState blockstate = worldIn.getBlockState(posIn);
+        if (!blockstate.isAir(worldIn, posIn)) {
+            for(int j = 0; j<4;j++) {
+                for (int i = 0; i < this.radius; ++i) {
+                    double partangle = (angle+(90*j)*0.10);
+                    double d0 = random.nextGaussian() * 0.02D;
+                    double d1 = random.nextGaussian() * 0.02D;
+                    double d2 = random.nextGaussian() * 0.02D;
+                    worldIn.addParticle(ParticleTypes.HAPPY_VILLAGER, posIn.getX()+partangle-coordcenter,posIn.getY(),posIn.getZ()+partangle-coordcenter,d0,d1,d2);
+                }
+            }
+        }
+    }
+
 }

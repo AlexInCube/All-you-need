@@ -1,5 +1,5 @@
 {
-	"credit": "Made with Blockbench",
+	"parent": "block/cube",
 	"textures": {
 		"0": "allyouneed:block/splinkler",
 		"particle": "allyouneed:block/splinkler"

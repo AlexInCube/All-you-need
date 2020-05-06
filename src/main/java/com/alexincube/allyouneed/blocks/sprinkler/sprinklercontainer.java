@@ -117,11 +117,6 @@ public class sprinklercontainer extends Container implements IRedstoneControlCha
         return this.sprinklerdata.get(0);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public int getAngle(){
-        return this.sprinklerdata.get(1);
-    }
-
     @Override
     public void redstonecontrolchange() {
         if (this.sprinklerdata.get(0)==0){
