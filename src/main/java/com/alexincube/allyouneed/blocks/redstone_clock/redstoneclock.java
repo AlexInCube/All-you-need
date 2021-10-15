@@ -1,7 +1,6 @@
 package com.alexincube.allyouneed.blocks.redstone_clock;
 
 import com.alexincube.allyouneed.setup.ModTileEntityTypes;
-import com.sun.org.apache.regexp.internal.RE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
